@@ -1,0 +1,38 @@
+<div class="container">
+    <br>
+    <button mat-flat-button color="primary" (click)="createReport()">
+        <mat-icon>plus_one</mat-icon> Generar Reporte
+       </button>
+       <mat-table [dataSource]="dataSource" matSort>
+        <!-- Seleccionar -->
+        <!-- Id -->
+        <ng-container matColumnDef="idCliente">
+          <mat-header-cell *matHeaderCellDef><b>ID</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.IdCliente}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="FechaRegistroEmpresa">
+          <mat-header-cell *matHeaderCellDef><b>Fecha de Registro</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.FechaRegistroEmpresa | date: 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="RazonSocial">
+          <mat-header-cell *matHeaderCellDef><b>Razón social</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.RazonSocial}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="RFC">
+          <mat-header-cell *matHeaderCellDef><b>RFC</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.RFC}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Sucursal">
+          <mat-header-cell *matHeaderCellDef><b>Sucursal</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.Sucursal}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef><b>Nombre</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.Nombre}}</mat-cell>
+        </ng-container>
+        <!-- Headers -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,32 @@
+<div class="wrapper">
+  <div class="wrapped-div">
+    <div class="tab-header">
+      <h2 routerLink='/login' routerLinkActive='active'>Iniciar sesión</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <!-- agregar la directiva del formulario y agregar en el app.module (submit)="onSubmit(form)"-->
+        <form #form='ngForm' class="mb-4" autocomplete="off"  >
+          <div class="form-group">
+            <label>Username</label>
+            <input class="form-control" required #NombUsua="ngModel" name="NombreUsuario"
+             [(ngModel)]="formModel.NombreUsuario">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" required #Password="ngModel" name="Password"
+             [(ngModel)]="formModel.password">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+              <button type="submit" class="btn btn-lg btn-block" (click)="onSubmit(form)" >Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

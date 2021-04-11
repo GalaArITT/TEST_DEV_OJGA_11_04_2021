@@ -1,0 +1,82 @@
+<div>
+    <h2 mat-dialog-title>{{data.esNuevoRegistro ? 'Agregar Persona':'Editar Persona'}}
+        <div class="btn-group" style="float: right; margin-top: -5px;">
+            <button type="button" class="btn btn-secondary" fxFlex="0 0 auto" mat-stroked-button (click)="salir()"
+                style="left: -20px;">Cancelar</button>
+            <button class="btn btn-success" fxFlex="0 0 auto" mat-flat-button (click)="validarConfirmacion()">Guardar</button>
+        </div>
+    </h2>
+</div>
+<mat-dialog-content style="width: 800px;">
+    <div class="container-fluid">
+        <form [formGroup]="registroUsuario">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="">Nombre</label>
+                        <input type="text" class="form-control" formControlName="nombre">
+                    </div>
+                    <ng-container
+                        *ngIf="registroUsuario.get('nombre').invalid && (registroUsuario.get('nombre').dirty || registroUsuario.get('nombre').touched)">
+                        <p *ngIf="registroUsuario.get('nombre').errors.required" class="text-danger">
+                            * Campo requerido
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="">Apellido Paterno</label>
+                        <input type="text" class="form-control" formControlName="apellidoPaterno">
+                    </div>
+                    <ng-container
+                        *ngIf="registroUsuario.get('apellidoPaterno').invalid && (registroUsuario.get('apellidoPaterno').dirty || registroUsuario.get('apellidoPaterno').touched)">
+                        <p *ngIf="registroUsuario.get('apellidoPaterno').errors.required" class="text-danger">
+                            * Campo requerido
+                        </p>
+                    </ng-container>
+
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="">Apellido Materno</label>
+                        <input type="text" class="form-control" formControlName="apellidoMaterno">
+                    </div>
+                    <ng-container
+                    *ngIf="registroUsuario.get('apellidoMaterno').invalid && (registroUsuario.get('apellidoMaterno').dirty || registroUsuario.get('apellidoMaterno').touched)">
+                    <p *ngIf="registroUsuario.get('apellidoMaterno').errors.required" class="text-danger">
+                        * Campo requerido
+                    </p>
+                </ng-container>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="">RFC</label>
+                        <input type="text" class="form-control" formControlName="rfc">
+                    </div>
+                    <ng-container
+                    *ngIf="registroUsuario.get('rfc').invalid && (registroUsuario.get('rfc').dirty || registroUsuario.get('rfc').touched)">
+                    <p *ngIf="registroUsuario.get('rfc').errors.required" class="text-danger">
+                        * Campo requerido
+                    </p>
+                </ng-container>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" formControlName="fechaNacimiento" >
+                    </div>
+                    <ng-container
+                    *ngIf="registroUsuario.get('fechaNacimiento').invalid && (registroUsuario.get('fechaNacimiento').dirty || registroUsuario.get('fechaNacimiento').touched)">
+                    <p *ngIf="registroUsuario.get('fechaNacimiento').errors.required" class="text-danger">
+                        * Campo requerido
+                    </p>
+                </ng-container>
+                </div>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

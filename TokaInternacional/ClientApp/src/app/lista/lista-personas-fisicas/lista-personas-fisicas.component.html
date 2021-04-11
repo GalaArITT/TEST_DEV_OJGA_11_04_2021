@@ -1,0 +1,50 @@
+<div class="container">
+  <br>
+  <button mat-flat-button color="primary" (click)="abrirModalAgregar()">
+    <mat-icon>plus_one</mat-icon> Agregar Persona
+   </button>
+    <mat-table [dataSource]="dataSource" matSort>
+        <!-- Seleccionar -->
+        <!-- Id -->
+        <ng-container matColumnDef="idPersonaFisica">
+          <mat-header-cell *matHeaderCellDef><b>idPersonaFisica</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.idPersonaFisica}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Fecha de Registro">
+          <mat-header-cell *matHeaderCellDef><b>Fecha de Registro</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.fechaRegistro | date: 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Fecha de Actualizacion">
+          <mat-header-cell *matHeaderCellDef><b>Fecha de Actualizacion</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.fechaActualizacion | date: 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef><b>Nombre</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.nombre}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="RFC">
+          <mat-header-cell *matHeaderCellDef><b>RFC</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.rfc}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Fecha de Nacimiento">
+          <mat-header-cell *matHeaderCellDef><b>Fecha de Nacimiento</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.fechaNacimiento | date: 'dd/MM/yyyy'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="Acciones">
+          <mat-header-cell *matHeaderCellDef><b>Acciones</b> </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-flat-button color="accent" (click)="abrirModalEditar(element.idPersonaFisica)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-flat-button color="warn" (click)="eliminarRegistro(element.idPersonaFisica)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Headers -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+</div>
