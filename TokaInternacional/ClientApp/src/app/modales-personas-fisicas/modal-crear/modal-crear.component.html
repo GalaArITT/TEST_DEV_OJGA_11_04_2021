@@ -62,6 +62,9 @@
                     <p *ngIf="registroUsuario.get('rfc').errors.required" class="text-danger">
                         * Campo requerido
                     </p>
+                    <p *ngIf="registroUsuario.get('rfc').errors.pattern" class="help is-danger">
+                        * RFC no válida
+                      </p>
                 </ng-container>
                 </div>
                 <div class="col-6">

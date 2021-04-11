@@ -38,7 +38,8 @@ export class ModalCrearComponent implements OnInit {
         nombre: new FormControl(this.data.persona[0].nombre, [Validators.required]),
         apellidoPaterno: new FormControl(this.data.persona[0].apellidoPaterno, [Validators.required]),
         apellidoMaterno: new FormControl(this.data.persona[0].apellidoMaterno, [Validators.required]),
-        rfc: new FormControl(this.data.persona[0].rfc, [Validators.required, Validators.pattern('/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/') ]),
+        rfc: new FormControl(this.data.persona[0].rfc, 
+          [Validators.required, Validators.minLength(12), Validators.maxLength(13), Validators.pattern('[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?')]          ),
         fechaNacimiento: new FormControl(
           this.datePipe.transform(new Date(this.data.persona[0].fechaNacimiento),'yyyy-MM-dd')
           , [Validators.required])
