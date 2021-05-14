@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,10 @@ namespace TokaInternacional
             var connection = @"Server=.\SQLDELL;DataBase=TokaInternacional; Trusted_Connection=True; ConnectRetryCount=0";
             services.AddDbContext<TokaInternacionalContext>(options => options.UseSqlServer(connection));
             //agregar cors
+            //servicios
+            services.AddTransient<UsuarioService>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddCors();
                         //json web token JWT autenticacion
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
@@ -97,6 +102,8 @@ namespace TokaInternacional
                 config.AllowAnyHeader();
                 config.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString());
             });
+            //para la autenticacion
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

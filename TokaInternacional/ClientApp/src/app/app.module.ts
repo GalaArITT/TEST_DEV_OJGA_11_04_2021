@@ -23,6 +23,9 @@ import { ModalEditarComponent } from './modales-personas-fisicas/modal-editar/mo
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { DatePipe } from '@angular/common';
 import { ReporteComponent } from './principal/reporte/reporte.component';
+import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
+import { ModalCrearUsuarioComponent } from './modales-usuario/modal-crear-usuario/modal-crear-usuario.component';
+
 
 
 @NgModule({
@@ -35,7 +38,10 @@ import { ReporteComponent } from './principal/reporte/reporte.component';
     ModulosComponent,
     ListaPersonasFisicasComponent,
     ModalCrearComponent,
-    ReporteComponent
+    ReporteComponent,
+    ListaUsuariosComponent,
+    ModalCrearComponent,
+    ModalCrearUsuarioComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

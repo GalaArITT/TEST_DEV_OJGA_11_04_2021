@@ -1,0 +1,42 @@
+<div class="container">
+    <br>
+    <button mat-flat-button color="primary" (click)="abrirModalAgregar()">
+      <mat-icon>plus_one</mat-icon> Agregar Usuario
+     </button>
+      <mat-table [dataSource]="dataSource" matSort>
+          <!-- Seleccionar -->
+          <!-- Id -->
+          <ng-container matColumnDef="idUsuario">
+            <mat-header-cell *matHeaderCellDef><b>idUsuario</b> </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.idUsuarios}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="NombreUsuario">
+            <mat-header-cell *matHeaderCellDef><b>Nombre de usuario</b> </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.nombreUsuario}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Password">
+            <mat-header-cell *matHeaderCellDef><b>Contraseña</b> </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.password}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="FechaCreacion">
+            <mat-header-cell *matHeaderCellDef><b>Fecha de Creación</b> </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.fechaCreacion | date: 'dd/MM/yyyy'}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Acciones">
+            <mat-header-cell *matHeaderCellDef><b>Acciones</b> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button mat-flat-button color="accent" (click)="abrirModalEditar(element.idPersonaFisica)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-flat-button color="warn" (click)="eliminarRegistro(element.idPersonaFisica)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+  
+          <!-- Headers -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let element; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>

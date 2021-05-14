@@ -20,7 +20,6 @@ export class ModalCrearComponent implements OnInit {
     private personasFisicasService: PersonasFisicasService) { }
 
   registroUsuario : FormGroup;
-  GuardarBtnContenido=false;
   ngOnInit() {
     console.log(this.data);
  
@@ -29,7 +28,7 @@ export class ModalCrearComponent implements OnInit {
         nombre: new FormControl(null, [Validators.required]),
         apellidoPaterno: new FormControl(null, [Validators.required]),
         apellidoMaterno: new FormControl(null, [Validators.required]),
-        rfc: new FormControl(null, [Validators.required,Validators.pattern('/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/') ]),
+        rfc: new FormControl(null, [Validators.required,Validators.pattern(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/)]),
         fechaNacimiento: new FormControl(null, [Validators.required])
       });
     }else{
@@ -39,7 +38,7 @@ export class ModalCrearComponent implements OnInit {
         apellidoPaterno: new FormControl(this.data.persona[0].apellidoPaterno, [Validators.required]),
         apellidoMaterno: new FormControl(this.data.persona[0].apellidoMaterno, [Validators.required]),
         rfc: new FormControl(this.data.persona[0].rfc, 
-          [Validators.required, Validators.minLength(12), Validators.maxLength(13), Validators.pattern('[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?')]          ),
+          [Validators.required, Validators.minLength(12), Validators.maxLength(13), Validators.pattern(/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/)]),
         fechaNacimiento: new FormControl(
           this.datePipe.transform(new Date(this.data.persona[0].fechaNacimiento),'yyyy-MM-dd')
           , [Validators.required])
@@ -50,13 +49,13 @@ export class ModalCrearComponent implements OnInit {
     if(this.data.esNuevoRegistro){
       this.personasFisicasService.PostTbPersonasFisicas(this.registroUsuario.value).subscribe(res=>{
         console.log(res);
-        this.snackBar.open("registro exitoso");
+        this.snackBar.open("registro exitoso",'Ok',{ duration: 5000 });
         this.personasFisicasService.invocarMetodoTraerContenido();
       });
     }else{
       let id = this.data.persona[0].idPersonaFisica;
       this.personasFisicasService.PutTbPersonasFisicas(id,this.registroUsuario.value).subscribe(res=>{
-        this.snackBar.open("actualización exitosa");
+        this.snackBar.open("actualización exitosa",'Ok',{ duration: 5000 });
         this.personasFisicasService.invocarMetodoTraerContenido();
       })
     }
@@ -66,7 +65,7 @@ export class ModalCrearComponent implements OnInit {
       this.guardar()
     }else{
       this.registroUsuario.markAllAsTouched();
-      this.snackBar.open("error al ingresar los datos");
+      this.snackBar.open("error al ingresar los datos",'Error',{ duration: 5000 });
     }
   }
   salir(){

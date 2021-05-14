@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TokaInternacional.Models;
@@ -21,64 +22,33 @@ namespace TokaInternacional.Controllers
     {
         private readonly TokaInternacionalContext db;
         private readonly ApplicationSetting_Token _appSettings_token;
+        private readonly UsuarioService _usuarioService;
         private readonly IHttpContextAccessor _httpContext;
 
-        public UsuariosController(TokaInternacionalContext context, IOptions<ApplicationSetting_Token> appSettings_token)
+        public UsuariosController(TokaInternacionalContext context, IOptions<ApplicationSetting_Token> appSettings_token,
+            UsuarioService usuarioService)
         {
             db = context;
             _appSettings_token = appSettings_token.Value;
+            _usuarioService = usuarioService;
         }
         [HttpGet("[action]")]
         [Authorize]
         //endpoint para obtener el usuario autenticado
         public async Task<Usuarios> GetUsuario()
         {
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            //el valor del id del dbSet<Usuario> es short por ello hay que convertir
-            short idConvert = Convert.ToInt16(userId);
-            //mostrar ese alumno autenticado 
-            //var user = await db.Usuarios.FindAsync(idConvert);
-            Usuarios user = await db.Usuarios.Where(s => s.IdUsuarios == idConvert).FirstOrDefaultAsync();
-            return user; 
+            Usuarios usuarioConectado = await _usuarioService.GetUsuario();
+            return usuarioConectado; 
         }
         // POST: api/Usuarios
         //login para usuario 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login(Usuarios usuario)
+        public async Task<ActionResult<Usuarios>> Login(Usuarios usuario)
         {
-            //obtener la consulta del usuario 
-            var Query_Usuario = await db.Usuarios.Where(s => s.NombreUsuario == usuario.NombreUsuario
-            && s.Password == usuario.Password).FirstOrDefaultAsync();
-
-            //si la consulta devuelve datos
-            if (Query_Usuario != null)
-            {
-                //crear e inicializar el descriptor del token
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID", Query_Usuario.IdUsuarios.ToString()) //inicializar el ID del Query
-                    }),
-                    //agregar fecha de expiración del token
-                    Expires = DateTime.UtcNow.AddDays(1),
-
-                    SigningCredentials = new SigningCredentials(
-                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings_token.JWT_Secret)),
-                        SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                //escribir el token esn eta variable 
-                var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
-            }
-            else
-            {
-                return BadRequest(new { message = "Usuario o contraseña incorrectos" });
-            }
-
+            ActionResult<Usuarios> usuarioLogueado = await _usuarioService.Login(usuario);
+            return usuarioLogueado;
         }
+        [HttpGet("[action]")]
         public async Task<Usuarios> getUsuarioConectado()
         {
             Usuarios usuarioBD = null;
@@ -89,5 +59,19 @@ namespace TokaInternacional.Controllers
             }
             return usuarioBD;
         }
+        [HttpGet("[action]")]
+        public async Task<List<Usuarios>> getUsuarios()
+        {
+            List<Usuarios> usuario = await _usuarioService.GetUsuarios();
+            return usuario;
+
+        }
+        [HttpPost("[action]")]
+        public async Task<ActionResult<Usuarios>> RegistrarUsuario(Usuarios usuarios)
+        {
+            ActionResult<Usuarios> usuario = await _usuarioService.RegistrarUsuario(usuarios);
+            return usuario;
+        }
+
     }
 }

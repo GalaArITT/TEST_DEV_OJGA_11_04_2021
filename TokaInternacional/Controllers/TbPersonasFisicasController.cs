@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using TokaInternacional.Models;
 
 namespace TokaInternacional.Controllers
@@ -76,13 +77,22 @@ namespace TokaInternacional.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult<TbPersonasFisicas>> PostTbPersonasFisicas(TbPersonasFisicas tbPersonasFisicas)
         {
-            tbPersonasFisicas.FechaRegistro = DateTime.Now;
-            tbPersonasFisicas.Activo = true;
-            tbPersonasFisicas.UsuarioAgrega = 1;
-            _context.TbPersonasFisicas.Add(tbPersonasFisicas);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTbPersonasFisicas", new { id = tbPersonasFisicas.IdPersonaFisica }, tbPersonasFisicas);
+            using IDbContextTransaction tranpost = this._context.Database.BeginTransaction();
+            try
+            {
+                tbPersonasFisicas.FechaRegistro = DateTime.Now;
+                tbPersonasFisicas.Activo = true;
+                tbPersonasFisicas.UsuarioAgrega = 1;
+                _context.TbPersonasFisicas.Add(tbPersonasFisicas);
+                await _context.SaveChangesAsync();
+                tranpost.Commit();
+                return new ObjectResult(new { data = tbPersonasFisicas, exito = true, message = "El usuario ha sido registrado" });
+            }
+            catch (Exception ex)
+            {
+                tranpost.Rollback();
+                return new ObjectResult(new { message = "Ha ocurrido un error en el registro: " + ex.Message });
+            }
         }
 
         // DELETE: api/TbPersonasFisicas/5

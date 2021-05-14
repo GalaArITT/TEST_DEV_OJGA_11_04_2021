@@ -48,11 +48,11 @@ export class ReporteComponent implements OnInit {
     })
   }
   filtrarRegistrosLocal(){
-    this.personasFisicasService.obtenerCandidatosLocal().subscribe((res:any[])=>{
+    this.personasFisicasService.obtenerCandidatosLocal().subscribe((res:any)=>{
       console.log(res.Data);
       this.dataSource = new MatTableDataSource(res.Data);
       this.dataSource.paginator = this.paginator;
-      this.Registers = res.Data;
+      this.Registers = res;
     })
   }
   createReport() {
